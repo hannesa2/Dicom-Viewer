@@ -9,7 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import com.imebra.dicom.*;
+
+import com.imebra.dicom.CodecFactory;
+import com.imebra.dicom.ColorTransformsFactory;
+import com.imebra.dicom.DataSet;
+import com.imebra.dicom.DicomView;
+import com.imebra.dicom.Image;
+import com.imebra.dicom.ModalityVOILUT;
+import com.imebra.dicom.Stream;
+import com.imebra.dicom.StreamReader;
+import com.imebra.dicom.TransformsChain;
+import com.imebra.dicom.VOILUT;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,22 +28,22 @@ public class ScreenSlidePageFragment extends Fragment {
     /**
      * The argument key for the page number this fragment represents.
      */
-    public static final String ARG_PAGE = "page";
-    public static final String ARG_PATIENT_NAME= "patient_name";
-    public static final String ARG_MEDICAL_TEST_NAME= "medical_test_name";
-    public static final String ARG_SERIES_NAME= "series_name";
+    public static final String ARG_PAGE              = "page";
+    public static final String ARG_PATIENT_NAME      = "patient_name";
+    public static final String ARG_MEDICAL_TEST_NAME = "medical_test_name";
+    public static final String ARG_SERIES_NAME       = "series_name";
 
     /**
      * The fragment's page number, which is set to the argument value for {@link #ARG_PAGE}.
      */
-    private int mPageNumber;
+    private int    mPageNumber;
     private String mPatientName;
     private String mMedicalTestName;
     private String mSeriesName;
 
-    private Timer timer;
+    private Timer     timer;
     private MyHandler handler;
-    private Images images;
+    private Images    images;
 
     private DicomView imageView;
     private boolean animationRunning = false;
@@ -78,23 +88,21 @@ public class ScreenSlidePageFragment extends Fragment {
         this.images = series.getImages();
 
         this.handler = new MyHandler();
-        this.timer= new Timer();
+        this.timer = new Timer();
 //        this.timer.schedule(new TickClass(), 500, 500);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout containing a title and body text.
-        ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.fragment_screen_slide_page, container, false);
-        this.imageView = (DicomView) rootView.findViewById(R.id.imageView);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
+        this.imageView = rootView.findViewById(R.id.imageView);
 
 //        // Set the title view to show the page number.
 //        ((TextView) rootView.findViewById(android.R.id.text1)).setText(
 //                getString(R.string.title_template_step, mPageNumber + 1));
 
-        final Button button = (Button) rootView.findViewById(R.id.play_animation);
+        final Button button = rootView.findViewById(R.id.play_animation);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -124,11 +132,9 @@ public class ScreenSlidePageFragment extends Fragment {
         // Get the first image
         Image image = dataSet.getImage(0);
         // Monochrome images may have a modality transform
-        if(ColorTransformsFactory.isMonochrome(image.getColorSpace()))
-        {
+        if (ColorTransformsFactory.isMonochrome(image.getColorSpace())) {
             ModalityVOILUT modalityVOILUT = new ModalityVOILUT(dataSet);
-            if(!modalityVOILUT.isEmpty())
-            {
+            if (!modalityVOILUT.isEmpty()) {
                 Image modalityImage = modalityVOILUT.allocateOutputImage(image, image.getSizeX(), image.getSizeY());
                 modalityVOILUT.runTransform(image, 0, 0, image.getSizeX(), image.getSizeY(), modalityImage, 0, 0);
                 image = modalityImage;
@@ -138,22 +144,18 @@ public class ScreenSlidePageFragment extends Fragment {
         String patientName = dataSet.getString(0x0010, 0, 0x0010, 0);
         Log.i("patient name from dcm", patientName);
         String studyDesc = dataSet.getString(0x0008, 0, 0x1030, 0);
-        String seriesDesc = dataSet.getString(0x0008,0,0x103E,0);
+        String seriesDesc = dataSet.getString(0x0008, 0, 0x103E, 0);
 
         // Allocate a transforms chain: contains all the transforms to execute before displaying
         //  an image
         TransformsChain transformsChain = new TransformsChain();
         // Monochromatic image may require a presentation transform to display interesting data
-        if(ColorTransformsFactory.isMonochrome(image.getColorSpace()))
-        {
+        if (ColorTransformsFactory.isMonochrome(image.getColorSpace())) {
             VOILUT voilut = new VOILUT(dataSet);
             int voilutId = voilut.getVOILUTId(0);
-            if(voilutId != 0)
-            {
+            if (voilutId != 0) {
                 voilut.setVOILUT(voilutId);
-            }
-            else
-            {
+            } else {
                 // No presentation transform is present: here we calculate the optimal window/width (brightness,
                 //  contrast) and we will use that
                 voilut.applyOptimalVOI(image, 0, 0, image.getSizeX(), image.getSizeY());
