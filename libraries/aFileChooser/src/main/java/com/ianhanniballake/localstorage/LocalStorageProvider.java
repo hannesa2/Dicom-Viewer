@@ -30,7 +30,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     /**
      * Default root projection: everything but Root.COLUMN_MIME_TYPES
      */
-    private final static String[] DEFAULT_ROOT_PROJECTION = new String[] {
+    private final static String[] DEFAULT_ROOT_PROJECTION     = new String[]{
             Root.COLUMN_ROOT_ID,
             Root.COLUMN_FLAGS, Root.COLUMN_TITLE, Root.COLUMN_DOCUMENT_ID, Root.COLUMN_ICON,
             Root.COLUMN_AVAILABLE_BYTES
@@ -39,7 +39,7 @@ public class LocalStorageProvider extends DocumentsProvider {
      * Default document projection: everything but Document.COLUMN_ICON and
      * Document.COLUMN_SUMMARY
      */
-    private final static String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
+    private final static String[] DEFAULT_DOCUMENT_PROJECTION = new String[]{
             Document.COLUMN_DOCUMENT_ID,
             Document.COLUMN_DISPLAY_NAME, Document.COLUMN_FLAGS, Document.COLUMN_MIME_TYPE,
             Document.COLUMN_SIZE,
@@ -50,8 +50,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     public Cursor queryRoots(final String[] projection) throws FileNotFoundException {
         // Create a cursor with either the requested fields, or the default
         // projection if "projection" is null.
-        final MatrixCursor result = new MatrixCursor(projection != null ? projection
-                : DEFAULT_ROOT_PROJECTION);
+        final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_ROOT_PROJECTION);
         // Add Home directory
         File homeDir = Environment.getExternalStorageDirectory();
         final MatrixCursor.RowBuilder row = result.newRow();
@@ -71,8 +70,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     }
 
     @Override
-    public String createDocument(final String parentDocumentId, final String mimeType,
-            final String displayName) throws FileNotFoundException {
+    public String createDocument(final String parentDocumentId, final String mimeType, final String displayName) throws FileNotFoundException {
         File newFile = new File(parentDocumentId, displayName);
         try {
             newFile.createNewFile();
@@ -85,7 +83,7 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public AssetFileDescriptor openDocumentThumbnail(final String documentId, final Point sizeHint,
-            final CancellationSignal signal) throws FileNotFoundException {
+                                                     final CancellationSignal signal) throws FileNotFoundException {
         // Assume documentId points to an image file. Build a thumbnail no
         // larger than twice the sizeHint
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -138,7 +136,7 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public Cursor queryChildDocuments(final String parentDocumentId, final String[] projection,
-            final String sortOrder) throws FileNotFoundException {
+                                      final String sortOrder) throws FileNotFoundException {
         // Create a cursor with either the requested fields, or the default
         // projection if "projection" is null.
         final MatrixCursor result = new MatrixCursor(projection != null ? projection
@@ -165,16 +163,14 @@ public class LocalStorageProvider extends DocumentsProvider {
         return result;
     }
 
-    private void includeFile(final MatrixCursor result, final File file)
-            throws FileNotFoundException {
+    private void includeFile(final MatrixCursor result, final File file) throws FileNotFoundException {
         final MatrixCursor.RowBuilder row = result.newRow();
         // These columns are required
         row.add(Document.COLUMN_DOCUMENT_ID, file.getAbsolutePath());
         row.add(Document.COLUMN_DISPLAY_NAME, file.getName());
         String mimeType = getDocumentType(file.getAbsolutePath());
         row.add(Document.COLUMN_MIME_TYPE, mimeType);
-        int flags = file.canWrite() ? Document.FLAG_SUPPORTS_DELETE | Document.FLAG_SUPPORTS_WRITE
-                : 0;
+        int flags = file.canWrite() ? Document.FLAG_SUPPORTS_DELETE | Document.FLAG_SUPPORTS_WRITE : 0;
         // We only show thumbnails for image files - expect a call to
         // openDocumentThumbnail for each file that has
         // this flag set
@@ -216,7 +212,7 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public ParcelFileDescriptor openDocument(final String documentId, final String mode,
-            final CancellationSignal signal) throws FileNotFoundException {
+                                             final CancellationSignal signal) throws FileNotFoundException {
         File file = new File(documentId);
         final boolean isWrite = (mode.indexOf('w') != -1);
         if (isWrite) {

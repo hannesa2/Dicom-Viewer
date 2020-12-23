@@ -39,7 +39,7 @@ public class MedicalTestListActivity extends ListActivity {
         }
 
         mSamples = samples.toArray(new Sample[samples.size()]);
-        setListAdapter(new ArrayAdapter<Sample>(this,
+        setListAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 mSamples));

@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class MainActivity extends ListActivity {
     private static final int REQUEST_CODE = 6384; // onActivityResult request
-    private static final String TAG = "FileChooserExampleActivity";
+    private static final String TAG = "FileChooserExample";
 
     /**
      * The collection of all samples in the app. This gets instantiated in {@link
@@ -35,7 +35,6 @@ public class MainActivity extends ListActivity {
      * android.content.res.Resources}.
      */
     private static Sample[] mSamples;
-    private ListView listView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +45,7 @@ public class MainActivity extends ListActivity {
         // Instantiate the list of samples.
         instantiateList();
 
-        final Button button = (Button) findViewById(R.id.choose_file_button);
+        final Button button = findViewById(R.id.choose_file_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -118,7 +117,7 @@ public class MainActivity extends ListActivity {
                             Patients.getInstance().addPatient(path, this);
                             instantiateList();
                         } catch (Exception e) {
-                            Log.e("FileSelectorTestActivity", "File select error", e);
+                            Log.e("FileSelectorTest", "File select error", e);
                         }
                     }
                 }
