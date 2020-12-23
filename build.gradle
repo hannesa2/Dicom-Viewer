@@ -10,7 +10,7 @@ buildscript {
 
 ext {
     defaultCompileSdkVersion = 28
-    defaultMinSdkVersion = 16
+    defaultMinSdkVersion = 19
     defaultTargetSdkVersion = 28
     defaultSupportLibVersion = "28.0.0"
 }
