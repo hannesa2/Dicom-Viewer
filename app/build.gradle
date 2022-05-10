@@ -64,7 +64,7 @@ android {
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    implementation 'net.rdrei.android.dirchooser:library:2.1@aar'
+    implementation 'net.rdrei.android.dirchooser:library:3.2@aar'
     implementation files('libs/imebra_android.jar')
     implementation project(':libraries:aFileChooser')
     implementation 'junit:junit:4.13.2'
