@@ -55,10 +55,11 @@ android {
             versionNameSuffix ".debug"
         }
     }
-
-    lintOptions{
+    lint {
         disable 'MissingTranslation'
     }
+    namespace 'info.hannes.dicom.app'
+
 }
 
 dependencies {
