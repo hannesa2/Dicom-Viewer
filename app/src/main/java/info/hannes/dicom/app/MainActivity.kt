@@ -12,8 +12,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ListView
+import androidx.core.content.ContextCompat.startActivity
 import com.github.amlcurran.showcaseview.targets.Target
 import com.ipaulpro.afilechooser.utils.FileUtils
+import info.hannes.github.AppUpdateHelper
 import java.lang.Exception
 import java.util.ArrayList
 
@@ -37,6 +39,12 @@ class MainActivity : ListActivity() {
             .setContentText(R.string.R_string_desc_single_shot)
             .singleShot(42)
             .build()
+
+        AppUpdateHelper.checkForNewVersion(
+            this@MainActivity,
+            BuildConfig.GIT_REPOSITORY,
+            { msg -> Toast.makeText(this, msg, Toast.LENGTH_LONG).show() }
+        )
     }
 
     private fun instantiateList() {

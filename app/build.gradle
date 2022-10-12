@@ -8,8 +8,10 @@ android {
         applicationId "info.hannes.dicom.app"
         minSdkVersion defaultMinSdkVersion
         targetSdkVersion defaultTargetSdkVersion
-        versionCode 1
-        versionName "1.0"
+
+        versionCode getGitCommitCount()
+        versionName getTag()
+        buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
     }
 
     signingConfigs {
@@ -61,6 +63,20 @@ android {
     }
     namespace 'info.hannes.dicom.app'
 
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (variant.name == "release") {
+                def builtType = variant.buildType.name
+                def vName = variant.versionName
+                def vCode = variant.versionCode
+                // def flavor = variant.flavorName
+                def newName = "Dicom"
+                newName += "-${vName}-${vCode}-${builtType}.apk"
+                outputFileName = newName
+            }
+            println "$variant.name: name is $outputFileName"
+        }
+    }
 }
 
 dependencies {
@@ -72,5 +88,24 @@ dependencies {
     implementation 'junit:junit:4.13.2'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
+    implementation 'com.github.hannesa2:githubAppUpdate:1.6'
     implementation 'androidx.core:core-ktx:1.9.0'
+}
+
+static def getGitOriginRemote() {
+    def process = "git remote -v".execute()
+    def values = process.text.toString().trim().split("\\r\\n|\\n|\\r")
+
+    def found = values.find { it.startsWith("origin") && it.endsWith("(push)") }
+    return found.replace("origin", "").replace("(push)", "").replace(".git", "").trim()
+}
+
+static def getGitCommitCount() {
+    def process = "git rev-list HEAD --count".execute()
+    return process.text.toInteger()
+}
+
+static def getTag() {
+    def process = "git describe --tags".execute()
+    return process.text.toString().trim()
 }
