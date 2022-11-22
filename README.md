@@ -1,5 +1,1 @@
-#Dicom Viewer
-
-Simple DICOM Viewer for Android.
-
-(work in progress...)
+Deprecated, because included imebra_android.jar don't support arm64
