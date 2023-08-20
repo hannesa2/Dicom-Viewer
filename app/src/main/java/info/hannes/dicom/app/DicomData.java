@@ -1,9 +1,9 @@
 package info.hannes.dicom.app;
 
-import com.imebra.dicom.CodecFactory;
-import com.imebra.dicom.DataSet;
+import com.imebra.CodecFactory;
+import com.imebra.DataSet;
 import com.imebra.dicom.Stream;
-import com.imebra.dicom.StreamReader;
+import com.imebra.StreamReader;
 
 public class DicomData {
     private String patientName;

@@ -5,10 +5,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import com.imebra.dicom.*;
+
+import com.imebra.CodecFactory;
+import com.imebra.ColorTransformsFactory;
+import com.imebra.DataSet;
+import com.imebra.Image;
+import com.imebra.ModalityVOILUT;
+import com.imebra.StreamReader;
+import com.imebra.TransformsChain;
+import com.imebra.VOILUT;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Stream;
 
 public class Animation extends Activity {
     private Timer timer;

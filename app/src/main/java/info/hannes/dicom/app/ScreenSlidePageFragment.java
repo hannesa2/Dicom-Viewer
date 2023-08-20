@@ -10,16 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.imebra.dicom.CodecFactory;
-import com.imebra.dicom.ColorTransformsFactory;
-import com.imebra.dicom.DataSet;
-import com.imebra.dicom.DicomView;
-import com.imebra.dicom.Image;
-import com.imebra.dicom.ModalityVOILUT;
-import com.imebra.dicom.Stream;
-import com.imebra.dicom.StreamReader;
-import com.imebra.dicom.TransformsChain;
-import com.imebra.dicom.VOILUT;
+import com.imebra.CodecFactory;
+import com.imebra.ColorTransformsFactory;
+import com.imebra.DataSet;
+import com.imebra.DicomView;
+import com.imebra.Image;
+import com.imebra.ModalityVOILUT;
+import com.imebra.Stream;
+import com.imebra.StreamReader;
+import com.imebra.TransformsChain;
+import com.imebra.VOILUT;
 
 import java.util.Timer;
 import java.util.TimerTask;
