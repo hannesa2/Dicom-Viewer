@@ -12,6 +12,10 @@ android {
         versionName "1.0"
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     signingConfigs {
         release {
             storeFile file('../signing/release.keystore')
@@ -64,6 +68,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'net.rdrei.android.dirchooser:library:2.1@aar'
